@@ -41,6 +41,20 @@ class VacationCountdown {
         return (elapsed / totalPeriod) * 100;
     }
 
+    padZero(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    getDaysWord(days) {
+        if (days % 10 === 1 && days % 100 !== 11) {
+            return 'день';
+        } else if ([2, 3, 4].includes(days % 10) && ![12, 13, 14].includes(days % 100)) {
+            return 'дня';
+        } else {
+            return 'дней';
+        }
+    }
+
     updateDisplay() {
         const countdownElement = document.getElementById('countdown-display');
         const progressBarElement = document.getElementById('progress-fill');
@@ -61,7 +75,7 @@ class VacationCountdown {
             progressContainer.style.display = 'none';
         } else {
             // Нормальное состояние
-            countdownElement.textContent = `${timeRemaining.days} дней, ${timeRemaining.hours}:${timeRemaining.minutes}:${timeRemaining.seconds}`;
+            countdownElement.textContent = `${this.padZero(timeRemaining.days)} ${this.getDaysWord(timeRemaining.days)}, ${this.padZero(timeRemaining.hours)}:${this.padZero(timeRemaining.minutes)}:${this.padZero(timeRemaining.seconds)}`;
             
             const progress = this.calculateProgress();
             progressBarElement.style.width = `${progress}%`;
